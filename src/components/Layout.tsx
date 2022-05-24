@@ -44,9 +44,8 @@ const Layout: FC = ({ children }) => {
             <ThemeSwitch />
           </div>
         </header>
+        <main className="mb-auto">{children}</main>
       </div>
-      <main className="mb-auto">{children}</main>
-      
     </Container>
   )
 }
