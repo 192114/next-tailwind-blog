@@ -1,22 +1,15 @@
 import Link from 'next/link'
 import { FC } from 'react'
 import Tag from '@/components/Tag'
+import type { PostFrontMatter } from 'types/PostFrontMatter'
+import formatDate from '@/lib/formatDate'
 
-
-interface PostItemProps {
-  slug: string
-  date: string
-  title: string
-  tags: string[]
-  summary: string
-}
-
-const PostItem: FC<PostItemProps> = ({ date, slug, title, tags, summary }) => {
+const PostItem: FC<PostFrontMatter> = ({ date, slug, title, tags, summary }) => {
   return (
     <article>
       <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
         <p className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-          <time dateTime={date}>{date}</time>
+          <time dateTime={date}>{formatDate(date)}</time>
         </p>
 
         <div className="space-y-5 xl:col-span-3">
@@ -36,12 +29,10 @@ const PostItem: FC<PostItemProps> = ({ date, slug, title, tags, summary }) => {
             <div className="prose max-w-none text-gray-500 dark:text-gray-400">{summary}</div>
           </div>
           <div className="text-base font-medium leading-6">
-            <Link
-              href={`/blog/${slug}`}
-              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-              aria-label={`Read "${title}"`}
-            >
-              查看更多 &rarr;
+            <Link href={`/blog/${slug}`}>
+              <a className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                查看更多 &rarr;
+              </a>
             </Link>
           </div>
         </div>

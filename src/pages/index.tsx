@@ -1,8 +1,19 @@
 import PageTitle from '@/components/PageTitle'
 import PostItem from '@/components/PostItem'
-import type { NextPage } from 'next'
+import { getAllFilesFrontMatter } from '@/lib/mdx'
+import type { GetStaticProps, InferGetStaticPropsType } from 'next'
+import { PostFrontMatter } from 'types/PostFrontMatter'
 
-const Home: NextPage = () => {
+export const getStaticProps: GetStaticProps<{ posts: PostFrontMatter[] }> = async () => {
+  const posts = await getAllFilesFrontMatter()
+  return {
+    props: {
+      posts,
+    }
+  }
+}
+
+const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -16,9 +27,15 @@ const Home: NextPage = () => {
         </div>
 
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          <li className="py-10">
-            {/* <PostItem /> */}
-          </li>
+          {
+            posts.slice(0, 5).map((fontMatter) => {
+              return (
+                <li className="py-10" key={fontMatter.slug}>
+                  <PostItem {...fontMatter} />
+                </li>
+              )
+            })
+          }
         </ul>
         
       </div>
