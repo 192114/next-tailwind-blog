@@ -81,6 +81,7 @@ export const getFileBySlug = async (slug: string) => {
 
   return {
     mdxSource: code,
+    cwd: path.join(root, 'src/components'),
     // toc,
     frontMatter: {
       slug: slug || null,
