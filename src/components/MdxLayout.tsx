@@ -7,6 +7,7 @@ import Link from 'next/link'
 import Tag from '@/components/Tag'
 import { Toc } from 'types/Toc'
 import { PostFrontMatter } from 'types/PostFrontMatter'
+import cn from 'classnames'
 
 interface WrapperProps {
   frontMatter: PostFrontMatter
@@ -17,6 +18,7 @@ interface WrapperProps {
 
 const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, toc, children }) => {
   const { date, title, tags } = frontMatter
+
   return (
     <Container>
       <article>
@@ -31,25 +33,35 @@ const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, toc, children }) =
             </div>
           </header>
 
-          <div className="grid-cols-4 grid grid-rows-auto-1fr xl:gap-x-6">
+          <div className="grid-cols-4 grid grid-rows-auto-1fr xl:gap-x-6 pb-5">
             {/* pc端显示在页面左侧 手机端显示在底部 */}
             <footer className="col-span-4 row-start-2 divide-gray-200 text-sm font-medium leading-5 dark:divide-gray-700 xl:col-span-1 xl:divide-y xl:row-start-1">
-              <div>
-                {
-                  toc && (
-                    <div className="py-4 xl:py-8">
-                      <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                        目录
-                      </h2>
-                      <div className="mt-3 flex flex-wrap">
-                        {toc.map((item) => (
-                          <a href={item.url} key={item.url}>{item.value}</a>
-                        ))}
-                      </div>
-                    </div>
-                  )
-                }
+              {toc && (
+                <div className="py-4 xl:py-8 hidden xl:block">
+                  <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    目录
+                  </h2>
+                  <div className="mt-3 flex flex-wrap text-sm text-gray-600 dark:text-gray-500">
+                    <dl className="space-y-2">
+                      {toc.map((item) => (
+                        <dd
+                          key={item.url}
+                          className={cn('truncate', {
+                            'pl-0': item.depth === 1,
+                            'pl-2': item.depth === 2,
+                            'pl-4': item.depth === 3,
+                            'pl-6': item.depth === 4,
+                          })}
+                        >
+                          <a href={item.url} className="hover:text-primary-500">{item.value}</a>
+                        </dd>
+                      ))}
+                    </dl>
+                  </div>
+                </div>
+              )}
 
+              <div>
                 {tags && (
                   <div className="py-4 xl:py-8">
                     <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">

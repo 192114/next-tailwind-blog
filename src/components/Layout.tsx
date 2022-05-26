@@ -6,6 +6,7 @@ import ThemeSwitch from '@/components/ThemeSwitch'
 import headerNavLinks from '@/data/headerNavLinks'
 
 import Logo from '@/data/logo.svg'
+import Footer from '@/components/Footer'
 
 
 const Layout: FC = ({ children }) => {
@@ -45,6 +46,7 @@ const Layout: FC = ({ children }) => {
           </div>
         </header>
         <main className="mb-auto">{children}</main>
+        <Footer />
       </div>
     </Container>
   )
