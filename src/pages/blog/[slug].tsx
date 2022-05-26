@@ -24,7 +24,7 @@ interface StaticParamProps extends ParsedUrlQuery {
 }
 
 export const getStaticProps: GetStaticProps<{
-  post: { mdxSource: string; frontMatter: PostFrontMatter } // toc: Toc;
+  post: { mdxSource: string; frontMatter: PostFrontMatter, toc: Toc }
   prev?: { slug: string; title: string }
   next?: { slug: string; title: string }
 }> = async (context) => {
@@ -53,13 +53,13 @@ const Article = ({
   prev,
   next
 }:InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { mdxSource, frontMatter } = post
+  const { mdxSource, frontMatter, toc } = post
 
   return (
     <>
       {'draft' in frontMatter && frontMatter.draft !== true ? (
         <MDXLayout
-          // toc={toc} toc
+          toc={toc}
           mdxSource={mdxSource}
           frontMatter={frontMatter}
           prev={prev}

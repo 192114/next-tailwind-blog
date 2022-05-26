@@ -9,7 +9,7 @@ import remarkFootnotes from 'remark-footnotes'
 import remarkMath from 'remark-math'
 // import remarkExtractFrontmatter from './remark-extract-frontmatter'
 // import remarkCodeTitles from './remark-code-title'
-// import remarkTocHeadings from './remark-toc-headings'
+import remarkTocHeadings from '@/lib/remark-toc-headings'
 // import remarkImgToJsx from './remark-img-to-jsx'
 // Rehype packages
 import rehypeSlug from 'rehype-slug'
@@ -51,13 +51,15 @@ export const getFileBySlug = async (slug: string) => {
 
   const source = fs.existsSync(mdxPath) ? fs.readFileSync(mdxPath, 'utf-8') : fs.readFileSync(mdPath, 'utf-8')
 
+  const toc: Toc = []
+
   const { code, frontmatter } = await bundleMDX({
     source,
     mdxOptions(options) {
       options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
         // remarkExtractFrontmatter,
-        // [remarkTocHeadings, { exportRef: toc }],
+        [remarkTocHeadings, { exportRef: toc }],
         remarkGfm,
         // remarkCodeTitles,
         [remarkFootnotes, { inlineNotes: true }],
@@ -81,7 +83,7 @@ export const getFileBySlug = async (slug: string) => {
 
   return {
     mdxSource: code,
-    // toc,
+    toc,
     frontMatter: {
       slug: slug || null,
       fileName: fs.existsSync(mdxPath) ? `${slug}.mdx` : `${slug}.md`,

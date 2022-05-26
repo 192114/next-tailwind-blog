@@ -2,18 +2,20 @@ import { ComponentMap, getMDXComponent } from 'mdx-bundler/client'
 import { FC, useMemo } from 'react'
 import Container from '@/components/Container'
 import formatDate from '@/lib/formatDate'
-import { PostFrontMatter } from 'types/PostFrontMatter'
-import PageTitle from './PageTitle'
+import PageTitle from '@/components/PageTitle'
 import Link from 'next/link'
 import Tag from '@/components/Tag'
+import { Toc } from 'types/Toc'
+import { PostFrontMatter } from 'types/PostFrontMatter'
 
 interface WrapperProps {
   frontMatter: PostFrontMatter
+  toc: Toc
   next?: { slug: string; title: string }
   prev?: { slug: string; title: string }
 }
 
-const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, children }) => {
+const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, toc, children }) => {
   const { date, title, tags } = frontMatter
   return (
     <Container>
@@ -33,6 +35,21 @@ const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, children }) => {
             {/* pc端显示在页面左侧 手机端显示在底部 */}
             <footer className="col-span-4 row-start-2 divide-gray-200 text-sm font-medium leading-5 dark:divide-gray-700 xl:col-span-1 xl:divide-y xl:row-start-1">
               <div>
+                {
+                  toc && (
+                    <div className="py-4 xl:py-8">
+                      <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        目录
+                      </h2>
+                      <div className="mt-3 flex flex-wrap">
+                        {toc.map((item) => (
+                          <a href={item.url} key={item.url}>{item.value}</a>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                }
+
                 {tags && (
                   <div className="py-4 xl:py-8">
                     <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
