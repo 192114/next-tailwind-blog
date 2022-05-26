@@ -21,24 +21,18 @@ const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, children }) => {
         {/* 文章标题 */}
         <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
           <header className="pt-6 xl:pb-6">
-            <div className="space-y-1 text-center">
+            <div className="space-y-2 text-center">
               <div className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
                 <time dateTime={date}>{formatDate(date)}</time>
               </div>
-
-              <div>
-                <PageTitle>{title}</PageTitle>
-              </div>
+              <PageTitle>{title}</PageTitle>
             </div>
           </header>
 
-          {/* 中间文章显示区域 */}
-          <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-            <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
-
+          <div className="grid-cols-4 grid grid-rows-auto-1fr xl:gap-x-6">
             {/* pc端显示在页面左侧 手机端显示在底部 */}
-            <footer>
-              <div className="divide-gray-200 text-sm font-medium leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y">
+            <footer className="col-span-4 row-start-2 divide-gray-200 text-sm font-medium leading-5 dark:divide-gray-700 xl:col-span-1 xl:divide-y xl:row-start-1">
+              <div>
                 {tags && (
                   <div className="py-4 xl:py-8">
                     <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
@@ -86,6 +80,11 @@ const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, children }) => {
                 </Link>
               </div>
             </footer>
+
+            {/* 中间文章显示区域 */}
+            <div className="col-span-4 xl:col-span-3 xl:pb-0 divide-y divide-gray-200 dark:divide-gray-700">
+              <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
+            </div>
           </div>
         </div>
       </article>

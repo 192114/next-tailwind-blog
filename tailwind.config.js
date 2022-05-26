@@ -15,6 +15,10 @@ module.exports = {
         primary: colors.indigo,
         gray: colors.neutral,
       },
+      gridTemplateRows: {
+        // 文章详情响应式布局
+        'auto-1fr': 'auto 1fr',
+      }
     },
   },
   plugins: [],

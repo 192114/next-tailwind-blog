@@ -1,8 +1,12 @@
 import PageTitle from "@/components/PageTitle"
 import { formatSlug, getAllFiles, getAllFilesFrontMatter, getFileBySlug } from "@/lib/mdx"
 import MDXLayout from "@/components/MdxLayout"
+import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next"
+import { Toc } from "types/Toc"
+import { PostFrontMatter } from "types/PostFrontMatter"
+import { ParsedUrlQuery } from "querystring"
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const posts = getAllFiles()
 
   return {
@@ -15,14 +19,16 @@ export const getStaticPaths = async () => {
   }
 }
 
-interface StaticPropsType {
-  params: {
-    slug: string
-  }
+interface StaticParamProps extends ParsedUrlQuery {
+  slug: string
 }
 
-export const getStaticProps = async ({ params }: StaticPropsType) => {
-  const { slug } = params
+export const getStaticProps: GetStaticProps<{
+  post: { mdxSource: string; frontMatter: PostFrontMatter } // toc: Toc;
+  prev?: { slug: string; title: string }
+  next?: { slug: string; title: string }
+}> = async (context) => {
+  const { slug } = context.params as StaticParamProps
   
   const allPosts = await getAllFilesFrontMatter()
 
@@ -46,14 +52,14 @@ const Article = ({
   post,
   prev,
   next
-}) => {
-  const { mdxSource, toc, frontMatter } = post
+}:InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { mdxSource, frontMatter } = post
 
   return (
     <>
       {'draft' in frontMatter && frontMatter.draft !== true ? (
         <MDXLayout
-          toc={toc}
+          // toc={toc} toc
           mdxSource={mdxSource}
           frontMatter={frontMatter}
           prev={prev}
@@ -62,7 +68,7 @@ const Article = ({
       ) : (
         <div className="mt-24 text-center">
           <PageTitle>
-            Under Construction{' '}
+            可能正在写呢吧{' '}
             <span role="img" aria-label="roadwork sign">
               🚧
             </span>

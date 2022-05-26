@@ -81,14 +81,13 @@ export const getFileBySlug = async (slug: string) => {
 
   return {
     mdxSource: code,
-    cwd: path.join(root, 'src/components'),
     // toc,
     frontMatter: {
       slug: slug || null,
       fileName: fs.existsSync(mdxPath) ? `${slug}.mdx` : `${slug}.md`,
       ...frontmatter,
       date: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
-    }
+    } as PostFrontMatter
   }
 }
 
