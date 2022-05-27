@@ -12,6 +12,8 @@ interface OptionsType {
 }
 
 const remarkTocHeadings = (options: OptionsType) => {
+  // 热更新可能会导致 slug-number 的情况
+  slugger.reset()
   return (tree: Root) => visit(tree, 'heading', (node) => {
     const textContent = toString(node)
     options.exportRef.push({

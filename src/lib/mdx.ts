@@ -7,7 +7,7 @@ import { bundleMDX } from 'mdx-bundler'
 import remarkGfm from 'remark-gfm'
 import remarkFootnotes from 'remark-footnotes'
 import remarkMath from 'remark-math'
-// import remarkExtractFrontmatter from './remark-extract-frontmatter'
+import remarkExtractFrontmatter from './remark-extract-frontmatter'
 // import remarkCodeTitles from './remark-code-title'
 import remarkTocHeadings from '@/lib/remark-toc-headings'
 // import remarkImgToJsx from './remark-img-to-jsx'
@@ -49,7 +49,26 @@ export const getFileBySlug = async (slug: string) => {
   const mdPath = path.join(blogDirectory, `${slug}.md`)
   const mdxPath = path.join(blogDirectory, `${slug}.mdx`)
 
-  const source = fs.existsSync(mdxPath) ? fs.readFileSync(mdxPath, 'utf-8') : fs.readFileSync(mdPath, 'utf-8')
+  const source = fs.existsSync(mdxPath)
+    ? fs.readFileSync(mdxPath, 'utf-8')
+    : fs.readFileSync(mdPath, 'utf-8')
+
+  if (process.platform === 'win32') {
+    process.env.ESBUILD_BINARY_PATH = path.join(
+      process.cwd(),
+      'node_modules',
+      'esbuild',
+      'esbuild.exe'
+    )
+  } else {
+    process.env.ESBUILD_BINARY_PATH = path.join(
+      process.cwd(),
+      'node_modules',
+      'esbuild',
+      'bin',
+      'esbuild'
+    )
+  }
 
   const toc: Toc = []
 
@@ -58,7 +77,7 @@ export const getFileBySlug = async (slug: string) => {
     mdxOptions(options) {
       options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
-        // remarkExtractFrontmatter,
+        remarkExtractFrontmatter,
         [remarkTocHeadings, { exportRef: toc }],
         remarkGfm,
         // remarkCodeTitles,
@@ -78,7 +97,7 @@ export const getFileBySlug = async (slug: string) => {
       ]
 
       return options
-    }
+    },
   })
 
   return {
@@ -89,7 +108,7 @@ export const getFileBySlug = async (slug: string) => {
       fileName: fs.existsSync(mdxPath) ? `${slug}.mdx` : `${slug}.md`,
       ...frontmatter,
       date: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
-    } as PostFrontMatter
+    } as PostFrontMatter,
   }
 }
 
@@ -98,7 +117,7 @@ export const getAllFilesFrontMatter = async () => {
   const files = getAllFiles()
 
   const allFrontMatter: PostFrontMatter[] = []
-  
+
   files.forEach((fileName: string) => {
     if (path.extname(fileName) !== '.md' && path.extname(fileName) !== '.mdx') {
       return

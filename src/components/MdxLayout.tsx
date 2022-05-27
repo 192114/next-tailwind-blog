@@ -17,40 +17,47 @@ interface WrapperProps {
   prev?: { slug: string; title: string }
 }
 
+interface CurrentAnchorType {
+  value: string
+  top: number
+}
+
 const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, toc, children }) => {
   const { date, title, tags } = frontMatter
-  const [currentAnchor, setcurrentAnchor] = useState<string | null>(null)
+  const [currentAnchor, setCurrentAnchor] = useState<string | null>(null)
 
   const articleDomRef = useRef<HTMLDivElement | null>(null)
 
   // 页面渲染后监听 滚动事件
   useEffect(() => {
-    const scrollHandle = () => {
-      const docScrollTop = document.documentElement.scrollTop || document.body.scrollTop
+    const scrollHandle = throttle(() => {
+      const lowerZero = toc.reduce((maxLowerZero: CurrentAnchorType | null, current) => {
+        const dom = articleDomRef.current?.querySelector(`a[href="${current.url}"]`)
 
-      let lowerZero: {value: string, top: number } | null = null
-      toc.forEach((tocItem) => {
-        const current = articleDomRef.current?.querySelector(`a[href="${tocItem.url}"]`)
-
-        if (current && current.getBoundingClientRect().top <= 0 && (!lowerZero || current.getBoundingClientRect().top > lowerZero.top)) {
-          lowerZero = { value: tocItem.url, top: current.getBoundingClientRect().top }
+        if (
+          dom &&
+          dom.getBoundingClientRect().top <= 10 &&
+          (!maxLowerZero || maxLowerZero.top < dom.getBoundingClientRect().top)
+        ) {
+          return { value: current.url, top: dom.getBoundingClientRect().top }
         }
-      })
+
+        return maxLowerZero
+      }, null)
 
       if (lowerZero !== null) {
-        setcurrentAnchor(lowerZero.value)
+        setCurrentAnchor(lowerZero.value)
+      } else {
+        setCurrentAnchor(null)
       }
-      
-    }
+    }, 1000)
 
-    document.addEventListener('scroll', scrollHandle, true)
-
+    document.addEventListener('scroll', scrollHandle, false)
 
     return () => {
-      document.removeEventListener('scroll', scrollHandle, true)
+      document.removeEventListener('scroll', scrollHandle, false)
     }
   }, [toc])
-  
 
   return (
     <Container>
@@ -89,7 +96,15 @@ const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, toc, children }) =
                               'pl-12': item.depth === 4,
                             })}
                           >
-                            <a href={item.url} title={item.value} className="hover:text-primary-500">{item.value}</a>
+                            <a
+                              href={item.url}
+                              title={item.value}
+                              className={cn('hover:text-primary-500', {
+                                'text-primary-500': currentAnchor === item.url,
+                              })}
+                            >
+                              {item.value}
+                            </a>
                           </dd>
                         ))}
                       </dl>
@@ -149,7 +164,9 @@ const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, toc, children }) =
 
             {/* 中间文章显示区域 */}
             <div className="col-span-4 xl:col-span-3 xl:pb-0 divide-y divide-gray-200 dark:divide-gray-700">
-              <div className="prose max-w-none pt-10 pb-8 dark:prose-dark" ref={articleDomRef}>{children}</div>
+              <div className="prose max-w-none pt-10 pb-8 dark:prose-dark" ref={articleDomRef}>
+                {children}
+              </div>
             </div>
           </div>
         </div>
