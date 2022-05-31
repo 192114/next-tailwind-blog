@@ -7,6 +7,7 @@ import headerNavLinks from '@/data/headerNavLinks'
 
 import Logo from '@/data/logo.svg'
 import Footer from '@/components/Footer'
+import MobileNav from '@/components/MobileNav'
 
 
 const Layout: FC = ({ children }) => {
@@ -34,15 +35,16 @@ const Layout: FC = ({ children }) => {
                 <Link
                   href={navLinkItem.href}
                   key={navLinkItem.href}
+                  className="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4"
                 >
-                  <a className="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4">
-                    {navLinkItem.title}
-                  </a>
+                  {navLinkItem.title}
                 </Link>
               ))}
             </div>
 
             <ThemeSwitch />
+
+            <MobileNav />
           </div>
         </header>
         <main className="mb-auto">{children}</main>

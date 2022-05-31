@@ -12,7 +12,7 @@ interface TagsType {
 
 const root = process.cwd()
 
-export const getAllTags = async () => {
+const getAllTags = () => {
   const allFiles = getAllFiles()
 
   const allTags: TagsType = {}
@@ -37,3 +37,5 @@ export const getAllTags = async () => {
 
   return allTags
 }
+
+export default getAllTags

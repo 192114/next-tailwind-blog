@@ -16,10 +16,8 @@ const PostItem: FC<PostFrontMatter> = ({ date, slug, title, tags, summary }) => 
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold leading-8 tracking-tight">
-                <Link href={`/blog/${slug}`}>
-                  <a className="text-gray-900 dark:text-gray-100">
-                    {title}
-                  </a>
+                <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
+                  {title}
                 </Link>
               </h2>
               <div className="mt-3 flex flex-wrap">
@@ -31,10 +29,8 @@ const PostItem: FC<PostFrontMatter> = ({ date, slug, title, tags, summary }) => 
             <div className="prose max-w-none text-gray-500 dark:text-gray-400">{summary}</div>
           </div>
           <div className="text-base font-medium leading-4">
-            <Link href={`/blog/${slug}`}>
-              <a className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                查看更多 &rarr;
-              </a>
+            <Link href={`/blog/${slug}`} className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+              查看更多 &rarr;
             </Link>
           </div>
         </div>

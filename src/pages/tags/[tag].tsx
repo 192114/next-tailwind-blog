@@ -1,5 +1,5 @@
-const Tag = () => {
-  return 1
+const Tags = () => {
+  return <>1111</>
 }
 
-export default Tag
+export default Tags

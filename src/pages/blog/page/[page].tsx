@@ -1,6 +1,5 @@
-import PageTitle from '@/components/PageTitle'
-import Pagination, { PaginationProps } from '@/components/Pagination'
-import PostItem from '@/components/PostItem'
+import type { PaginationProps } from '@/components/Pagination'
+import PostListLayout from '@/layouts/PostListLayout'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import { ParsedUrlQuery } from 'querystring'
@@ -58,23 +57,13 @@ export const getStaticProps: GetStaticProps<{ displayPost: PostFrontMatter[], pa
 // 博客列表 带分页
 const BlogList = ({ displayPost, pagination }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
-      <div className="space-y-2 pt-6 pb-6 md:space-y-5">
-        <PageTitle>文章列表</PageTitle>
-      </div>
-
-      <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-        {displayPost.slice(0, 5).map((fontMatter) => {
-          return (
-            <li className="py-10" key={fontMatter.slug}>
-              <PostItem {...fontMatter} />
-            </li>
-          )
-        })}
-      </ul>
-
-      <Pagination {...pagination} />
-    </div>
+    <>
+      <PostListLayout 
+        posts={displayPost}
+        pagination={pagination}
+        pageTitle="全部文章"
+      />
+    </>
   )
 }
 

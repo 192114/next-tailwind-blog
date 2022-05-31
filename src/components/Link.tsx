@@ -1,4 +1,4 @@
-import Link from '@/components/Link'
+import Link from 'next/link'
 import { AnchorHTMLAttributes, DetailedHTMLProps } from 'react'
 
 const CustomLink = ({ href, ...rest }: DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>) => {
