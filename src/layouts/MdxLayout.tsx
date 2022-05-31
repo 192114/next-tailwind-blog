@@ -1,9 +1,10 @@
 import { ComponentMap, getMDXComponent } from 'mdx-bundler/client'
 import { FC, useMemo, useEffect, useRef, useState } from 'react'
 import Container from '@/components/Container'
+import CustomLink from '@/components/Link'
 import formatDate from '@/lib/formatDate'
 import PageTitle from '@/components/PageTitle'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import { Toc } from 'types/Toc'
 import { PostFrontMatter } from 'types/PostFrontMatter'
@@ -178,7 +179,7 @@ const Wrapper: FC<WrapperProps> = ({ frontMatter, next, prev, toc, children }) =
 export const MDXComponents: ComponentMap = {
   // Image,
   // TOCInline,
-  // a: CustomLink,
+  a: CustomLink,
   // pre: Pre,
   wrapper: Wrapper,
   // BlogNewsletterForm,

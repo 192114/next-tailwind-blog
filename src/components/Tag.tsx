@@ -1,4 +1,5 @@
-import Link from "next/link"
+import Link from "@/components/Link"
+import kebabCase from "@/lib/kebabCase"
 import { FC } from "react"
 
 interface TagProps {
@@ -7,8 +8,7 @@ interface TagProps {
 
 const Tag: FC<TagProps> = ({ text }) => {
   return (
-    // `/tags/${kebabCase(text)}`
-    <Link href={`/tags/${text}`}>
+    <Link href={`/tags/${kebabCase(text)}`}>
       <a className="mr-3 text-sm font-medium uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
         {text.split(' ').join('-')}
       </a>

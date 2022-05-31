@@ -1,6 +1,6 @@
 import PageTitle from "@/components/PageTitle"
 import { formatSlug, getAllFiles, getAllFilesFrontMatter, getFileBySlug } from "@/lib/mdx"
-import MDXLayout from "@/components/MdxLayout"
+import MDXLayout from "@/layouts/MdxLayout"
 import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next"
 import { Toc } from "types/Toc"
 import { PostFrontMatter } from "types/PostFrontMatter"

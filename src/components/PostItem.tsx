@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { FC } from 'react'
 import Tag from '@/components/Tag'
 import type { PostFrontMatter } from 'types/PostFrontMatter'

@@ -1,5 +1,6 @@
 import PageTitle from '@/components/PageTitle'
 import PostItem from '@/components/PostItem'
+import PostListLayout from '@/layouts/PostListLayout'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
 import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { PostFrontMatter } from 'types/PostFrontMatter'
@@ -16,7 +17,7 @@ export const getStaticProps: GetStaticProps<{ posts: PostFrontMatter[] }> = asyn
 const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+      {/* <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-6 md:space-y-5">
           <PageTitle>
             最新文章
@@ -38,7 +39,13 @@ const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
           }
         </ul>
         
-      </div>
+      </div> */}
+
+      <PostListLayout 
+        posts={posts}
+        pageTitle='最新文章'
+        pageDesc='记录，分享，提升'
+      />
     </>
   )
 }
