@@ -8,9 +8,9 @@ import remarkGfm from 'remark-gfm'
 import remarkFootnotes from 'remark-footnotes'
 import remarkMath from 'remark-math'
 import remarkExtractFrontmatter from './remark-extract-frontmatter'
-// import remarkCodeTitles from './remark-code-title'
+import remarkCodeTitles from '@/lib/remark-code-title'
 import remarkTocHeadings from '@/lib/remark-toc-headings'
-// import remarkImgToJsx from './remark-img-to-jsx'
+import remarkImgToJsx from '@/lib/remark-img-to-jsx'
 // Rehype packages
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
@@ -80,10 +80,10 @@ export const getFileBySlug = async (slug: string) => {
         remarkExtractFrontmatter,
         [remarkTocHeadings, { exportRef: toc }],
         remarkGfm,
-        // remarkCodeTitles,
+        remarkCodeTitles,
         [remarkFootnotes, { inlineNotes: true }],
         remarkMath,
-        // remarkImgToJsx,
+        remarkImgToJsx,
       ]
 
       options.rehypePlugins = [

@@ -1,4 +1,4 @@
-import type { Root, Parent, Literal } from 'mdast'
+import { Parent, Node, Literal } from 'unist'
 import { visit } from 'unist-util-visit'
 import sizeOf from 'image-size'
 import fs from 'fs'
@@ -11,13 +11,14 @@ type ImageNode = Parent & {
 }
 
 export default function remarkImgToJsx() {
-  return (tree: Root) => {
+  return (tree: Node) => {
     visit(
       tree,
       // only visit p tags that contain an img element
-      (node: Parent): node is Parent => node.type === 'paragraph' && node.children.some((n) => n.type === 'image'),
+      (node: any): node is Parent =>
+        node.type === 'paragraph' && node.children.some((n: any) => n.type === 'image'),
       (node: Parent) => {
-        const imageNode = node.children.find((n) => n.type === 'image')  as ImageNode
+        const imageNode = node.children.find((n) => n.type === 'image') as ImageNode
 
         // only local files
         if (fs.existsSync(`${process.cwd()}/public${imageNode.url}`)) {
