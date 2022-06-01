@@ -1,8 +1,11 @@
 import Link from '@/components/Link'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { Text3D } from '@react-three/drei'
+import { useRef } from 'react'
 
 const NotFound = () => {
+
+
   return (
     // <div className="flex flex-col items-start justify-start md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6">
     //   <div className="space-x-2 pt-6 pb-8 md:space-y-5">
@@ -19,15 +22,21 @@ const NotFound = () => {
     //   </div>
     // </div>
 
-    <div className="h-screen">
+    <div className="h-screen text-gray-900 dark:text-gray-100">
       <Canvas
         shadows={true}
         className=""
         camera={{
-          position: [-6, 7, 7],
+          position: [0, 3, 100],
+          fov: 15
         }}
       >
-        <Text3D font="/static/fonts/bold.blob">hello world!</Text3D>
+        <Text3D font="/static/fonts/Blaka_Regular.json" size={3}>
+          404
+        </Text3D>
+        <ambientLight intensity={0.5} />
+        <spotLight position={[0, 10, 0]} intensity={0.3} />
+        <directionalLight position={[-20, 0, -10]} intensity={0.7} />
       </Canvas>
     </div>
   )
