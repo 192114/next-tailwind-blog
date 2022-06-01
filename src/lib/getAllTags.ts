@@ -18,7 +18,7 @@ const getAllTags = () => {
   const allTags: TagsType = {}
 
   allFiles.forEach((file) => {
-    const source = fs.readFileSync(path.join(root, 'data', file), 'utf8')
+    const source = fs.readFileSync(path.join(root, 'data/blogs', file), 'utf8')
 
     const { data } = matter(source)
 
