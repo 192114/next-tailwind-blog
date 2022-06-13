@@ -1,6 +1,8 @@
 import Link from '@/components/Link'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader'
 import { useEffect, useRef } from 'react'
 
 const NotFound = () => {
@@ -32,18 +34,41 @@ const NotFound = () => {
     renderer.setSize(containerWidth, containerHeight)
     container.appendChild(renderer.domElement)
 
-    // 创建模型
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshNormalMaterial()
+    new FontLoader().load('/static/fonts/helvetiker_regular.json', (textFont) => {
+      // 创建模型
+      const textGeometry = new TextGeometry('404', {
+        font: textFont,
+        size: 0.5,
+        height: 0.01,
+        curveSegments: 12,
+        bevelEnabled: true,
+        bevelThickness: 0.1,
+        bevelSize: 0.05,
+        bevelSegments: 3,
+      })
+      const material = new THREE.MeshNormalMaterial()
 
-    const cube = new THREE.Mesh(geometry, material)
-    scene.add(cube)
+      // textGeometry.computeBoundingBox() // 计算 box 边界
+      // if (textGeometry.boundingBox) {
+      //   textGeometry.translate(
+      //     -textGeometry.boundingBox.max.x * 0.5, // Subtract bevel size
+      //     -textGeometry.boundingBox.max.y * 0.5, // Subtract bevel size
+      //     -textGeometry.boundingBox.max.z * 0.5 // Subtract bevel thickness
+      //   )
+      // }
+
+      textGeometry.center()
+
+      const cube = new THREE.Mesh(textGeometry, material)
+      scene.add(cube)
+
+      renderer.render(scene, camera)
+    })
 
     // 创建透视相机 （视角为15度）
     const camera = new THREE.PerspectiveCamera(15, containerWidth / containerHeight, 1, 10000)
     camera.position.set(0, 0, 10)
     camera.lookAt(target)
-    renderer.render(scene, camera)
 
     // 鼠标操作
     const controls = new OrbitControls(camera, renderer.domElement)
@@ -59,27 +84,16 @@ const NotFound = () => {
     // controls.update()
 
     const render = () => {
-      // controls.update()
       renderer.render(scene, camera)
-    }
-
-    const resizeWindow = () => {
-      const containerWidth = container.offsetWidth
-      const containerHeight = container.offsetHeight
-      renderer.setSize(containerWidth, containerHeight)
-      render()
     }
 
     // 必须注册该方法 否则无效
     controls.addEventListener('change', render)
 
-    window.addEventListener('resize', resizeWindow, false)
-
     return () => {
       container.removeChild(renderer.domElement)
       renderer.dispose()
       controls.dispose()
-      window.removeEventListener('resize', resizeWindow, false)
     }
   }, [])
 
