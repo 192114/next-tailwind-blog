@@ -36,13 +36,13 @@ const NotFound = () => {
 
     new FontLoader().load('/static/fonts/helvetiker_regular.json', (textFont) => {
       // 创建模型
-      const textGeometry = new TextGeometry('404', {
+      const textGeometry = new TextGeometry('4 0 4', {
         font: textFont,
         size: 0.5,
         height: 0.01,
         curveSegments: 12,
         bevelEnabled: true,
-        bevelThickness: 0.1,
+        bevelThickness: 0.02,
         bevelSize: 0.05,
         bevelSegments: 3,
       })
@@ -72,16 +72,6 @@ const NotFound = () => {
 
     // 鼠标操作
     const controls = new OrbitControls(camera, renderer.domElement)
-
-    controls.enableDamping = true // 动画循环是否有阻尼
-    // controls.autoRotate = true
-    // controls.dampingFactor = 0.05
-    // controls.screenSpacePanning = false
-    // controls.minDistance = 100
-    // controls.maxDistance = 500
-    // controls.maxPolarAngle = Math.PI / 2
-    // controls.target = target
-    // controls.update()
 
     const render = () => {
       renderer.render(scene, camera)
